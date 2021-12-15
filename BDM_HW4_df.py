@@ -68,7 +68,6 @@ def main(sc, spark):
         .drop('visits', 'stats') \
         .cache()
         
-    OUTPUT_PREFIX = '/content'
 
     filenames = ['big_box_grocers', 'convenience_stores', 'drinking_places', 'full_service_resturants', 'limited_service_resturants', 
                  'pharmacies_and_drug_stores', 'snack_and_bakeries', 'specialty_food_stores', 'supermarkets_except_convenience_stores']
