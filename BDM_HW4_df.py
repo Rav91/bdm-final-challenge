@@ -66,6 +66,7 @@ def main(sc, spark):
         .withColumn('high', dfI.select('stats')[0]['high']) \
         .withColumn('date', concat(dfI.year, lit('-'), dfI.date)) \
         .drop('visits', 'stats') \
+        .sort(dfI.group, dfI.year, dfI.date) \
         .cache()
         
 
