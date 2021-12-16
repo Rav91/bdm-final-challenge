@@ -27,11 +27,11 @@ def main(sc, spark):
     dfF = dfE.drop('naics_code').cache()
     
     def expandVisits(date_range_start, visits_by_day):
-      visits_by_day = visits_by_day.replace('[', '').replace(']', '').split(',')
-      for i in range(7):
-        datem = datetime.strptime(date_range_start[0:10], "%Y-%m-%d")  + timedelta(days=i)
-        date = datem.strftime("%m-%d")
-        yield(datem.year, date, int(visits_by_day[i]))
+        visits_by_day = visits_by_day.replace('[', '').replace(']', '').split(',')
+        for i in range(7):
+            datem = datetime.strptime(date_range_start[0:10], "%Y-%m-%d")  + timedelta(days=i)
+            date = datem.strftime("%m-%d")
+            yield(datem.year, date, int(visits_by_day[i]))
 
     visitType = T.StructType([T.StructField('year', T.IntegerType()),
                               T.StructField('date', T.StringType()),
@@ -69,15 +69,14 @@ def main(sc, spark):
         .cache()
         
 
-    filenames = ['big_box_grocers', 'convenience_stores', 'drinking_places', 'full_service_resturants', 'limited_service_resturants', 
+    filenames = ['big_box_grocers', 'convenience_stores', 'drinking_places', 'full_service_restaurants', 'limited_service_restaurants', 
                  'pharmacies_and_drug_stores', 'snack_and_bakeries', 'specialty_food_stores', 'supermarkets_except_convenience_stores']
 
     for i in range(9):
       dfJ.filter(f'group={i}') \
         .drop('group') \
         .coalesce(1) \
-        .write.csv(f'{OUTPUT_PREFIX}/{filenames[i]}',
-                   mode='overwrite', header=True)
+        .write.csv(f'{OUTPUT_PREFIX}/{filenames[i]}', mode='overwrite', header=True)
 
 if __name__=='__main__':
     sc = SparkContext()
