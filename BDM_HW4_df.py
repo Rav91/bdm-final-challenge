@@ -70,70 +70,16 @@ def main(sc, spark):
         .drop('visits', 'stats') \
         .sort(dfI.group, dfI.year, dfI.date) \
         .cache()
+        
 
+    filenames = ['big_box_grocers', 'convenience_stores', 'drinking_places', 'full_service_restaurants', 'limited_service_restaurants', 
+                 'pharmacies_and_drug_stores', 'snack_and_bakeries', 'specialty_food_stores', 'supermarkets_except_convenience_stores']
 
-    filename = 'big_box_grocers'
-    dfJ.filter(f'group=0') \
+    for i in range(9):
+      dfJ.filter(f'group={i}') \
         .drop('group') \
         .coalesce(1) \
-        .write.csv(f'{OUTPUT_PREFIX}/{filename}',
-                   mode='overwrite', header=True)
-
-    filename = 'convenience_stores'
-    dfJ.filter(f'group=1') \
-        .drop('group') \
-        .coalesce(1) \
-        .write.csv(f'{OUTPUT_PREFIX}/{filename}',
-                   mode='overwrite', header=True)
-
-    filename = 'drinking_places'
-    dfJ.filter(f'group=2') \
-        .drop('group') \
-        .coalesce(1) \
-        .write.csv(f'{OUTPUT_PREFIX}/{filename}',
-                   mode='overwrite', header=True)
-
-    filename = 'full_service_restaurants'
-    dfJ.filter(f'group=3') \
-        .drop('group') \
-        .coalesce(1) \
-        .write.csv(f'{OUTPUT_PREFIX}/{filename}',
-                   mode='overwrite', header=True)
-
-    filename = 'limited_service_restaurants'
-    dfJ.filter(f'group=4') \
-        .drop('group') \
-        .coalesce(1) \
-        .write.csv(f'{OUTPUT_PREFIX}/{filename}',
-                   mode='overwrite', header=True)
-
-    filename = 'pharmacies_and_drug_stores'
-    dfJ.filter(f'group=5') \
-        .drop('group') \
-        .coalesce(1) \
-        .write.csv(f'{OUTPUT_PREFIX}/{filename}',
-                   mode='overwrite', header=True)
-
-    filename = 'snack_and_bakeries'
-    dfJ.filter(f'group=6') \
-        .drop('group') \
-        .coalesce(1) \
-        .write.csv(f'{OUTPUT_PREFIX}/{filename}',
-                   mode='overwrite', header=True)
-
-    filename = 'specialty_food_stores'
-    dfJ.filter(f'group=7') \
-        .drop('group') \
-        .coalesce(1) \
-        .write.csv(f'{OUTPUT_PREFIX}/{filename}',
-                   mode='overwrite', header=True)
-
-    filename = 'supermarkets_except_convenience_stores'
-    dfJ.filter(f'group=8') \
-        .drop('group') \
-        .coalesce(1) \
-        .write.csv(f'{OUTPUT_PREFIX}/{filename}',
-                   mode='overwrite', header=True)
+        .write.csv(f'{OUTPUT_PREFIX}/{filenames[i]}', mode='overwrite', header=True)
 
 if __name__=='__main__':
     sc = SparkContext()
